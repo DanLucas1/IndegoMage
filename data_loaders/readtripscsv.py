@@ -12,7 +12,7 @@ def load_data_from_api(*args, **kwargs):
     """
     Template for loading data from API
     """
-    url = ''
+    url = 'https://www.rideindego.com/wp-content/uploads/2024/04/indego-trips-2024-q1.zip'
     response = requests.get(url)
 
     return pd.read_csv(io.StringIO(response.text), sep=',')
