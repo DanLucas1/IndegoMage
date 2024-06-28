@@ -41,7 +41,7 @@ spark_config:
   use_custom_session: false
   # The variable name to set in kwargs['context'],
   # e.g. kwargs['context']['spark'] = spark_session
-  custom_session_var_name: 'Spark'
+  custom_session_var_name: 'spark'
 
 help_improve_mage: true
 notification_config:
@@ -52,4 +52,4 @@ notification_config:
     webhook_url: "{{ env_var('MAGE_SLACK_WEBHOOK_URL') }}"
   teams_config:
     webhook_url: "{{ env_var('MAGE_TEAMS_WEBHOOK_URL') }}"
-project_uuid: a8a7c739db8c4c12b8ad795b7f8105cb
+project_uuid: dd9abe1d66464402a700be71f582d3f0
