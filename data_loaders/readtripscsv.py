@@ -10,7 +10,7 @@ if 'test' not in globals():
 @data_loader
 def load_data_from_api(*args, **kwargs):
     """
-    Template for loading data from API
+    Reading data from Indego CSV
     """
     url = 'https://www.rideindego.com/wp-content/uploads/2024/04/indego-trips-2024-q1.zip'
     response = requests.get(url)
