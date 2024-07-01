@@ -1,5 +1,5 @@
 import io
-# import pandas as pd
+import pandas as pd
 import os
 import requests
 import zipfile
@@ -22,16 +22,41 @@ def load_data_from_api(*args, **kwargs):
     headers = {'User-Agent':'student-application'}
     
     url = f'https://www.rideindego.com/wp-content/uploads/2024/04/indego-trips-{year}-q{quarter}.zip' 
- 
-    response = requests.get(url, headers=headers)    
-    return response.status_code
+    response = requests.get(url, headers=headers)
 
-    # return pd.read_csv(io.StringIO(response.text), sep=',', nrows = 100, compression='zip')
 
+    # download response content to zipped file
+    local_zip_path = f'indego-trips-{year}-q{quarter}.zip'
+
+    with open(local_zip_path, 'wb') as file:
+        file.write(response.content)
+
+    # extract zipped file
+    extracted_folder_path = f'indego-trips-{year}-q{quarter}'
+
+    with zipfile.ZipFile(local_zip_path, 'r') as zip_ref:
+        zip_ref.extractall(extracted_folder_path)
+    extracted_folder_path = f'indego-trips-{year}-q{quarter}'
+
+    # generate test CSV for schema
+    csv_filename = f'indego-trips-{year}-q{quarter}.csv'
+    test_df = pd.read_csv(f'{extracted_folder_path}/{csv_filename}', sep=',', nrows=100)
+
+    # # Step 3: Upload the CSV file to Google Cloud Storage
+    # bucket_name = 'your-bucket-name'  # Replace with your GCS bucket name
+    # destination_blob_name = os.path.basename(csv_file_name)  # Use the CSV file name as the blob name
+
+    # # Initialize a GCS client
+    # storage_client = storage.Client()
+    # bucket = storage_client.bucket(bucket_name)
+    # blob = bucket.blob(destination_blob_name)
+
+    # # Upload the file
+    # blob.upload_from_filename(csv_file_name)
+    return test_df
+    # return response.status_code
 
 @test
 def test_output(output, *args) -> None:
-    """
-    Template code for testing the output of the block.
-    """
-    assert output is not None, 'The output is undefined'
+    assert output is not None, 'error'
+    # assert output == 200, f'status code: {output}'
